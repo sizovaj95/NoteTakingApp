@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "DpFc1gA1LL4/PVFr6f6B3C/hYSnr76424/xOx9N1xBJyzJofL4ICmHFuQIsbb95+oopJpyjugkwmvka6noaxVw==",
+  "success": true,
+  "projectFilePath": "D:\\Julia\\Documents\\Learning\\c#_course\\NoteTakingApp\\NoteTakingApp\\NoteTakingApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Julia\\.nuget\\packages\\csvhelper\\29.0.0\\csvhelper.29.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
