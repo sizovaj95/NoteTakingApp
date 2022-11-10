@@ -103,3 +103,9 @@ D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\obj\Debug\net6.0\r
 D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\obj\Debug\net6.0\UnitTests.pdb
 D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\obj\Debug\net6.0\UnitTests.genruntimeconfig.cache
 D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\obj\Debug\net6.0\ref\UnitTests.dll
+D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\bin\Debug\net6.0\Castle.Core.dll
+D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\bin\Debug\net6.0\Moq.dll
+D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\bin\Debug\net6.0\Ninject.dll
+D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\bin\Debug\net6.0\System.Diagnostics.EventLog.dll
+D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
+D:\Julia\Documents\Learning\c#_course\NoteTakingApp\UnitTests\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll

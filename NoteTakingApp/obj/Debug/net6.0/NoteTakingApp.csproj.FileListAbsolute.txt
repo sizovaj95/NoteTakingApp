@@ -15,3 +15,4 @@ D:\Julia\Documents\Learning\c#_course\NoteTakingApp\NoteTakingApp\obj\Debug\net6
 D:\Julia\Documents\Learning\c#_course\NoteTakingApp\NoteTakingApp\obj\Debug\net6.0\ref\NoteTakingApp.dll
 D:\Julia\Documents\Learning\c#_course\NoteTakingApp\NoteTakingApp\bin\Debug\net6.0\CsvHelper.dll
 D:\Julia\Documents\Learning\c#_course\NoteTakingApp\NoteTakingApp\obj\Debug\net6.0\NoteTakingApp.csproj.CopyComplete
+D:\Julia\Documents\Learning\c#_course\NoteTakingApp\NoteTakingApp\bin\Debug\net6.0\Ninject.dll

@@ -1,38 +1,47 @@
-﻿using CsvHelper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 
 namespace NoteTakingApp
 {
-    public class NoteManager
+    public class NoteManager: INoteManager
     {
+        private readonly IConsoleManager consoleManager;
+        private readonly ITimeManager timeManager;
         string NotesFilePath = @"D:\Julia\Documents\Learning\notes\notes.txt";
+
+        public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager)
+        {
+            this.consoleManager = consoleManager;
+            this.timeManager = timeManager;
+        }
 
         public List<NoteInfo> GetNotes()
         {
             List<NoteInfo> Notes = new List<NoteInfo>();
-            ConsoleKeyInfo cki;
+            ConsoleKey cki;
             do
             {
-                Console.WriteLine("Type your note: ");
-                string note = Console.ReadLine();
-                DateTime dtNow = DateTime.Now;
-                string date = dtNow.ToString("ddd, dd MMMM yyyy");
-                string time = dtNow.ToString("HH:mm");
+                consoleManager.WriteLine("Type your note: ");
+                string note = consoleManager.ReadLine();
+                DateTime dtNow = timeManager.DateTimeNow();
+                string date = timeManager.DateToString(dtNow);
+                string time = timeManager.TimeToString(dtNow);
                 NoteInfo noteInfo = new NoteInfo { Note = note, Date = date, Time = time };
 
                 Notes.Add(noteInfo);
 
-                Console.WriteLine("Press any key to add another note or Esc to exit.");
-                cki = Console.ReadKey(true);
-                Console.WriteLine();
+                consoleManager.WriteLine("Press any key to add another note or Esc to exit.");
+                cki = consoleManager.ReadKey(true);
 
-
-            } while (cki.Key != ConsoleKey.Escape);
+            } while (cki != ConsoleKey.Escape);
             return Notes;
         }
-
-
         public void SaveNotes(List<NoteInfo> notes)
         {
             bool includeHeader = true;
@@ -50,8 +59,6 @@ namespace NoteTakingApp
                 csv.WriteRecords(notes);
             }
         }
-
-
         public void ReadNotes()
         {
             TextReader streamReader = null;
@@ -61,7 +68,7 @@ namespace NoteTakingApp
             }
             catch (FileNotFoundException ex)
             {
-                Console.WriteLine(ex.Message);
+                consoleManager.WriteLine(ex.Message);
                 return;
             }
 
@@ -70,9 +77,8 @@ namespace NoteTakingApp
 
             foreach (NoteInfo note in notes)
             {
-                Console.WriteLine($"Note {note.Note}, taken on {note.Date} at {note.Time}");
+                consoleManager.WriteLine($"Note {note.Note}, taken on {note.Date} at {note.Time}");
             }
-
         }
     }
 }

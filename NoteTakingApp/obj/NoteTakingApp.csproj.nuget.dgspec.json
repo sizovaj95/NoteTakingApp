@@ -43,6 +43,10 @@
             "CsvHelper": {
               "target": "Package",
               "version": "[29.0.0, )"
+            },
+            "Ninject": {
+              "target": "Package",
+              "version": "[3.3.6, )"
             }
           },
           "imports": [
