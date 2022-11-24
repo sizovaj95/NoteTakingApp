@@ -29,12 +29,14 @@ namespace NoteTakingApp
             {
                 consoleManager.WriteLine("Type your note: ");
                 string note = consoleManager.ReadLine();
-                DateTime dtNow = timeManager.DateTimeNow();
-                string date = timeManager.DateToString(dtNow);
-                string time = timeManager.TimeToString(dtNow);
-                NoteInfo noteInfo = new NoteInfo { Note = note, Date = date, Time = time };
-
-                Notes.Add(noteInfo);
+                if (!String.IsNullOrEmpty(note))
+                {
+                    DateTime dtNow = timeManager.DateTimeNow();
+                    string date = timeManager.DateToString(dtNow);
+                    string time = timeManager.TimeToString(dtNow);
+                    NoteInfo noteInfo = new NoteInfo { Note = note, Date = date, Time = time };
+                    Notes.Add(noteInfo);
+                }         
 
                 consoleManager.WriteLine("Press any key to add another note or Esc to exit.");
                 cki = consoleManager.ReadKey(true);

@@ -3,26 +3,40 @@ using System.Collections.Generic;
 using NoteTakingApp;
 using Moq;
 using System;
+using FluentAssertions;
 
 namespace UnitTests
 {
     [TestClass]
-    public class NoteTakingTests
+    public class NoteTakingTests 
     {
-        [TestMethod]
-        public void GetNotes1()
+        Mock<IConsoleManager> consoleManagerMock;
+        Mock<ITimeManager> timeManagerMock;
+
+        static List<NoteInfo> expectedNotes;
+        static DateTime dateTimeNow;
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext _)
         {
-            List<NoteInfo> expectedNotes = new List<NoteInfo>();
+            expectedNotes = new List<NoteInfo>();
             expectedNotes.Add(new NoteInfo { Note = "Buy milk", Date = "Thu, 17 November 2022", Time = "07:14" });
             expectedNotes.Add(new NoteInfo { Note = "Pay bills", Date = "Thu, 17 November 2022", Time = "07:15" });
             expectedNotes.Add(new NoteInfo { Note = "Feed capybara", Date = "Thu, 17 November 2022", Time = "07:16" });
 
-            DateTime dateTimeNow = new DateTime(2022, 11, 17, 7, 14, 50);
-            DateTime anyDate;
+            dateTimeNow = new DateTime(2022, 11, 17, 7, 14, 50);
+        }
+        
+        [TestInitialize]
+        public void Setup()
+        {
+            consoleManagerMock = new Mock<IConsoleManager>();
+            timeManagerMock = new Mock<ITimeManager>();
+        }
 
-            var consoleManagerMock = new Mock<IConsoleManager>();
-            var timeManagerMock = new Mock<ITimeManager>();
-            
+        [TestMethod]
+        public void GetNotesIdealCase()
+        {
             consoleManagerMock.SetupSequence(p => p.WriteLine(It.IsAny<string>()));
             consoleManagerMock.SetupSequence(p => p.ReadLine())
                 .Returns("Buy milk")
@@ -37,15 +51,43 @@ namespace UnitTests
                 .Returns(dateTimeNow)
                 .Returns(dateTimeNow.AddMinutes(1))
                 .Returns(dateTimeNow.AddMinutes(2));
-            //timeManagerMock.Setup(p => p.DateToString(It.IsAny<DateTime>())).Returns(anyDate.ToString("ddd, dd MMMM yyyy"));
+
             timeManagerMock.Setup(p => p.DateToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("ddd, dd MMMM yyyy"));
             timeManagerMock.Setup(p => p.TimeToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("HH:mm"));
-            //timeManagerMock.Setup(p => p.TimeToString(It.IsAny<DateTime>())).Returns(dateTimeNow.ToString("HH:mm"));
 
             NoteManager noteManager = new NoteManager(consoleManagerMock.Object, timeManagerMock.Object);
             List<NoteInfo> actualNotes = noteManager.GetNotes();
-            CollectionAssert.AreEquivalent(expectedNotes, actualNotes);
+            expectedNotes.Should().BeEquivalentTo(actualNotes);
             
+        }
+
+        [TestMethod]
+        public void GetNotesEmptyNote()
+        {
+            consoleManagerMock.SetupSequence(p => p.WriteLine(It.IsAny<string>()));
+            consoleManagerMock.SetupSequence(p => p.ReadLine())
+                .Returns("Buy milk")
+                .Returns("Pay bills")
+                .Returns("")
+                .Returns("Feed capybara");
+            consoleManagerMock.SetupSequence(p => p.ReadKey(true))
+                .Returns(ConsoleKey.Enter)
+                .Returns(ConsoleKey.Enter)
+                .Returns(ConsoleKey.Enter)
+                .Returns(ConsoleKey.Escape);
+
+            timeManagerMock.SetupSequence(p => p.DateTimeNow())
+                .Returns(dateTimeNow)
+                .Returns(dateTimeNow.AddMinutes(1))
+                .Returns(dateTimeNow.AddMinutes(2));
+
+            timeManagerMock.Setup(p => p.DateToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("ddd, dd MMMM yyyy"));
+            timeManagerMock.Setup(p => p.TimeToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("HH:mm"));
+
+            NoteManager noteManager = new NoteManager(consoleManagerMock.Object, timeManagerMock.Object);
+            List<NoteInfo> actualNotes = noteManager.GetNotes();
+            expectedNotes.Should().BeEquivalentTo(actualNotes);
+
         }
     }
 }		
