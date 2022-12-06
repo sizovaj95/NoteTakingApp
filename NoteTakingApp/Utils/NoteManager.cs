@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
+using System.IO;
+using System.IO.Abstractions;
 
 namespace NoteTakingApp
 {
@@ -13,12 +15,23 @@ namespace NoteTakingApp
     {
         private readonly IConsoleManager consoleManager;
         private readonly ITimeManager timeManager;
-        string NotesFilePath = @"D:\Julia\Documents\Learning\notes\notes.txt";
+        public string notesFilePath;
+        private readonly IFileSystem fileSystem;
 
         public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager)
         {
             this.consoleManager = consoleManager;
             this.timeManager = timeManager;
+            notesFilePath = @"D:\Julia\Documents\Learning\notes\notes.txt";
+            fileSystem = new FileSystem();
+        }
+        public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager,
+                           string notesFilePath, IFileSystem fileSystem)
+        {
+            this.consoleManager = consoleManager;
+            this.timeManager = timeManager;
+            this.notesFilePath = notesFilePath;
+            this.fileSystem = fileSystem;
         }
 
         public List<NoteInfo> GetNotes()
@@ -47,14 +60,15 @@ namespace NoteTakingApp
         public void SaveNotes(List<NoteInfo> notes)
         {
             bool includeHeader = true;
-            if (File.Exists(NotesFilePath)) includeHeader = false;
+            if (File.Exists(notesFilePath)) includeHeader = false;
 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = includeHeader
             };
 
-            using (var stream = File.Open(NotesFilePath, FileMode.Append))
+            // using (var stream = File.Open(notesFilePath, FileMode.Append))
+            using (var stream = fileSystem.File.Open(notesFilePath, FileMode.Append))
             using (var writer = new StreamWriter(stream))
             using (var csv = new CsvWriter(writer, config))
             {
@@ -64,9 +78,10 @@ namespace NoteTakingApp
         public void ReadNotes()
         {
             TextReader streamReader = null;
+            streamReader = fileSystem.File.OpenText(notesFilePath);
             try
             {
-                streamReader = File.OpenText(NotesFilePath);
+                streamReader = fileSystem.File.OpenText(notesFilePath);
             }
             catch (FileNotFoundException ex)
             {

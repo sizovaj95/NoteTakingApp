@@ -9,8 +9,6 @@ namespace NoteTakingApp
     public interface IConsoleManager
     {
         void WriteLine(string message);
-        //ConsoleKeyInfo ReadKey();
-
         ConsoleKey ReadKey(bool boolean);
         string ReadLine();
     }
