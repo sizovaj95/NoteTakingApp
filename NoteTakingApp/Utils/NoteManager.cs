@@ -60,14 +60,13 @@ namespace NoteTakingApp
         public void SaveNotes(List<NoteInfo> notes)
         {
             bool includeHeader = true;
-            if (File.Exists(notesFilePath)) includeHeader = false;
+            if (fileSystem.File.Exists(notesFilePath)) includeHeader = false;
 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = includeHeader
             };
 
-            // using (var stream = File.Open(notesFilePath, FileMode.Append))
             using (var stream = fileSystem.File.Open(notesFilePath, FileMode.Append))
             using (var writer = new StreamWriter(stream))
             using (var csv = new CsvWriter(writer, config))

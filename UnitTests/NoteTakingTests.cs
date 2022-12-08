@@ -96,13 +96,30 @@ namespace UnitTests
             expectedNotes.Should().BeEquivalentTo(actualNotes);
         }
 
-        /*[TestMethod]
-        public void SaveNotesIdealCase()
+        [TestMethod]
+        public void SaveNotesFileExists()
         {
-            string currentDir = Directory.GetCurrentDirectory();
-            string path = Directory.GetParent(currentDir).ToString();
+            string mockString = "Note,Date,Time\nKill all humans!,\"Wed, 23 November 2022\",19:00\n";
+        
+            var mockInputFile = new MockFileData(mockString);
+            mockFileSystem.AddFile(saveDir, mockInputFile);
             noteManager.SaveNotes(expectedNotes);
-        }*/
+            MockFileData mockOutputFile = mockFileSystem.GetFile(saveDir);
+            string[] outputLines = mockOutputFile.TextContents.Split(new String[] { "\r\n",  "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            Assert.AreEqual(5, outputLines.Length);
+        }
+
+        [TestMethod]
+        public void SaveNotesFileNotExist()
+        {
+            mockFileSystem.AddDirectory(Directory.GetCurrentDirectory());
+            noteManager.SaveNotes(expectedNotes);
+            MockFileData mockOutputFile = mockFileSystem.GetFile(saveDir);
+            string[] outputLines = mockOutputFile.TextContents.Split(new String[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            Assert.AreEqual(4, outputLines.Length);
+        }
 
         [TestMethod]
         public void ReadNotesExistsCase()
