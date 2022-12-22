@@ -10,7 +10,7 @@ using System.IO.Abstractions.TestingHelpers;
 namespace UnitTests
 {
     [TestClass]
-    public class NoteTakingTests 
+    public class NoteTakingConsoleTests 
     {
         Mock<IConsoleManager> consoleManagerMock;
         Mock<ITimeManager> timeManagerMock;

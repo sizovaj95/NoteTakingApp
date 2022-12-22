@@ -22,8 +22,3 @@ namespace NoteTakingApp
         }      
     }
 }
-
-
-// tests?
-
-// remove notes

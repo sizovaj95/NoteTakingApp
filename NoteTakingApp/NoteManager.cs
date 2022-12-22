@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
-using System.IO;
 using System.IO.Abstractions;
 
 namespace NoteTakingApp
@@ -45,7 +39,7 @@ namespace NoteTakingApp
                 if (!String.IsNullOrEmpty(note))
                 {
                     DateTime dtNow = timeManager.DateTimeNow();
-                    string date = timeManager.DateToString(dtNow);
+                    string date = timeManager.DateToStringWeek(dtNow);
                     string time = timeManager.TimeToString(dtNow);
                     NoteInfo noteInfo = new NoteInfo { Note = note, Date = date, Time = time };
                     Notes.Add(noteInfo);
@@ -95,6 +89,12 @@ namespace NoteTakingApp
             {
                 consoleManager.WriteLine($"Note {note.Note}, taken on {note.Date} at {note.Time}");
             }
+        }
+
+        //Split interface so that this can be avoided
+        public void ReadNotes(string startDate, string endDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

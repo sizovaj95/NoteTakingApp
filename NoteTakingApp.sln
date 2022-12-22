@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteTakingApp", "NoteTakingApp\NoteTakingApp.csproj", "{DCD815DE-505D-4342-873E-B7B6319A5202}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteTakingAppConsole", "NoteTakingApp\NoteTakingAppConsole.csproj", "{DCD815DE-505D-4342-873E-B7B6319A5202}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{45EFC626-B087-43EC-821E-05B15E27F208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{45EFC626-B087-43EC-821E-05B15E27F208}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoteTakingAppDB", "NoteTakingAppDB\NoteTakingAppDB.csproj", "{9920599C-16DA-4E26-9A14-7FC94268702C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{2A9AA805-8A55-43BD-803C-58D53F443077}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{45EFC626-B087-43EC-821E-05B15E27F208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45EFC626-B087-43EC-821E-05B15E27F208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45EFC626-B087-43EC-821E-05B15E27F208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9920599C-16DA-4E26-9A14-7FC94268702C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9920599C-16DA-4E26-9A14-7FC94268702C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9920599C-16DA-4E26-9A14-7FC94268702C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9920599C-16DA-4E26-9A14-7FC94268702C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A9AA805-8A55-43BD-803C-58D53F443077}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A9AA805-8A55-43BD-803C-58D53F443077}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A9AA805-8A55-43BD-803C-58D53F443077}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A9AA805-8A55-43BD-803C-58D53F443077}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

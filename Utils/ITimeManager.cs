@@ -9,7 +9,8 @@ namespace NoteTakingApp
     public interface ITimeManager
     {
         DateTime DateTimeNow();
-        string DateToString(DateTime dateTime);
+        string DateToStringWeek(DateTime dateTime);
+        string DateToStringDash(DateTime dateTime);
         string TimeToString(DateTime dateTime);
     }
 }

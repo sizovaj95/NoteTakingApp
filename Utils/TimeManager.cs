@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace NoteTakingApp
 {
-    internal class TimeManager : ITimeManager
+    public class TimeManager : ITimeManager
     {
         public DateTime DateTimeNow()
         {
             return DateTime.Now;
         }
-        public string DateToString(DateTime dateTime)
+        public string DateToStringWeek(DateTime dateTime)
         {
             return dateTime.ToString("ddd, dd MMMM yyyy");
+        }
+
+        public string DateToStringDash(DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy-MM-dd");
         }
         public string TimeToString(DateTime dateTime)
         {
