@@ -1,8 +1,4 @@
-﻿using System.Data.SqlClient;
-using System.Text;
-using System.IO;
-
-
+﻿
 namespace NoteTakingApp
 {
 
@@ -32,6 +28,7 @@ namespace NoteTakingApp
                             "a - print all notes\n" +
                             "d - enter date range\n" +
                             "Esc - exit to main menu\n" );
+                        // Make exist after reading notes
                         ConsoleKey readOption = Console.ReadKey(true).Key;
                         switch (readOption)
                         {
@@ -40,18 +37,44 @@ namespace NoteTakingApp
                                 Console.ReadLine();
                                 break;
                             case ConsoleKey.D:
-                                // WHY THIS TEXT APPEARS ON SAME LINE ON THE SECOND ATTEMPT
                                 Console.Write("Please enter start date (yyyy-mm-dd): ");
                                 string startDate = Console.ReadLine();
                                 Console.Write("Please enter end date (yyyy-mm-dd): ");
                                 string endDate = Console.ReadLine();
                                 noteManager.ReadNotes(startDate, endDate);
                                 Console.ReadLine();
-                                break;                                
+                                break;
+                            case ConsoleKey.Escape:
+                                break;
                         }
                         break;
                     case ConsoleKey.D3:
-                        throw new NotImplementedException();
+                        consoleManager.WriteLine(
+                            "i - remove by Id\n" +
+                            "d - remove by Date\n" +
+                            "Esc - exit to main menu\n");
+                        readOption = Console.ReadKey(true).Key;
+                        switch (readOption)
+                        {
+                            case ConsoleKey.I:
+                                consoleManager.WriteLine("IDs to remove (separated by commas): ");
+                                string ids = Console.ReadLine();
+                                string[] idSplit = ids.Split(new char[] { ',', ' '});
+                                noteManager.RemoveNotes("Id", idSplit);
+                                break;
+                            case ConsoleKey.D:
+                                consoleManager.WriteLine("Dates to remove in \"yyyy-mm-dd\" format (separated by commas): ");
+                                string dates = Console.ReadLine();
+                                string[] datesSplit = dates.Split(new char[] { ',', ' ' });
+                                noteManager.RemoveNotes("Date", datesSplit);
+                                break;
+                            case ConsoleKey.Escape:
+                                break;
+                            default:
+                                consoleManager.WriteLine($"There is not such option: {readOption}");
+                                break;
+                        }
+                        break;
                     case ConsoleKey.Escape:
                         break;
                     

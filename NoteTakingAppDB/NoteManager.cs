@@ -69,8 +69,7 @@ namespace NoteTakingApp
             try
             {
                 conn.Open();
-                StringBuilder builder = new StringBuilder();
-                builder.Append("INSERT INTO Note (Note, Date, Time) VALUES ");
+                StringBuilder builder = new StringBuilder("INSERT INTO Note (Note, Date, Time) VALUES ");
                 foreach (NoteInfo note in notes)
                 {
                     builder.Append($"(N'{note.Note}', N'{note.Date}', N'{note.Time}'),");
@@ -95,17 +94,7 @@ namespace NoteTakingApp
             try
             {
                 string query = "SELECT * FROM Note";
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                using (adapter)
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    foreach (DataRow row in table.Rows)
-                    {
-                        DateTime date = (DateTime)row[2];
-                        consoleManager.WriteLine($"{row[0]}, {row[1]}, {timeManager.DateToStringWeek(date)}, {row[3]}");
-                    }
-                }
+                QueryDB(query);
             }
             catch (Exception ex)
             {
@@ -138,22 +127,89 @@ namespace NoteTakingApp
             try
             {
                 string query = $"SELECT * FROM Note WHERE Date between \'{startDate}\' and \'{endDate}\'";
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                using (adapter)
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    foreach (DataRow row in table.Rows)
-                    {
-                        DateTime date = (DateTime)row[2];
-                        Console.WriteLine($"{row[0]}, {row[1]}, {timeManager.DateToStringWeek(date)}, {row[3]}");
-                    }
-                }
+                QueryDB(query);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                consoleManager.WriteLine(ex.ToString());
             }
+        }
+
+        public void QueryDB(string query)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+            using (adapter)
+            {
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                if (table.Rows.Count == 0)
+                {
+                    consoleManager.WriteLine("There is no data.");
+                }
+                else
+                {
+                    foreach (DataRow row in table.Rows)
+                    {
+                        DateTime date = (DateTime)row[2];
+                        consoleManager.WriteLine($"{row[0]}, {row[1]}, {timeManager.DateToStringWeek(date)}, {row[3]}");
+                    }
+                }                
+            }
+        }
+        public void RemoveNotes(string by, params string[] conditions)
+        {
+            StringBuilder builder = new StringBuilder("DELETE FROM Note WHERE ");
+            string query = "";
+            switch (by)
+            {
+                case "Id":
+                    builder.Append("Id IN (");
+                    foreach (string cond in conditions)
+                    {
+                        if (int.TryParse(cond, out int _))
+                        {
+                            builder.Append($"{cond},");
+                        }
+                        else
+                        {
+                            consoleManager.WriteLine($"Incorrect entry: {cond}. Integer Id is expected! Ignored.");
+                        }
+                    }
+                    builder.Remove(builder.Length - 1, 1); // remove last comma
+                    builder.Append(')');
+                    query = builder.ToString();
+                    break;
+                case "Date":
+                    builder.Append("Date IN (");
+                    foreach (string cond in conditions)
+                    {
+                        if (DateTime.TryParseExact(cond, "yyyy-mm-dd", CultureInfo.InvariantCulture,
+                            DateTimeStyles.None, out _))
+                        {
+                            builder.Append($"\'{cond}\',");
+                        }
+                        else
+                        {
+                            consoleManager.WriteLine($"Incorrect entry: {cond}. Date is expected! Ignored.");
+                        }
+                    }
+                    builder.Remove(builder.Length - 1, 1);
+                    builder.Append(')');
+                    query = builder.ToString();
+                    break;               
+            }
+            conn.Open();
+            SqlCommand command = new SqlCommand(query, conn);
+            using (command)
+            {
+                command.ExecuteNonQuery();
+            }
+            conn.Close();
+            
         }
     }
 }
+
+
+// Ctrl+K, C
+// Ctrl+K, U
