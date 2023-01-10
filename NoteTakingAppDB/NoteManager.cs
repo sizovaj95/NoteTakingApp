@@ -9,12 +9,11 @@ using System.Globalization;
 
 namespace NoteTakingApp
 {
-    public class NoteManager: INoteManager
+    public class NoteManager
     {
         private readonly IConsoleManager consoleManager;
         private readonly ITimeManager timeManager;
-        private string connectionString;
-        readonly SqlConnection conn;
+        readonly SqlConnection? conn;
 
 
         public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager,
@@ -22,7 +21,6 @@ namespace NoteTakingApp
         {
             this.consoleManager = consoleManager;
             this.timeManager = timeManager;
-            this.connectionString = connectionString;
             try
             {
                 conn = new SqlConnection(connectionString);
@@ -69,6 +67,7 @@ namespace NoteTakingApp
             try
             {
                 conn.Open();
+                // Protect from sql injection
                 StringBuilder builder = new StringBuilder("INSERT INTO Note (Note, Date, Time) VALUES ");
                 foreach (NoteInfo note in notes)
                 {

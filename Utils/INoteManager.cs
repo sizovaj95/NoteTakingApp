@@ -6,6 +6,5 @@ namespace NoteTakingApp
         List<NoteInfo> GetNotes();
         void SaveNotes(List<NoteInfo> notes);
         void ReadNotes();
-        void ReadNotes(string startDate, string endDate);
     }
 }

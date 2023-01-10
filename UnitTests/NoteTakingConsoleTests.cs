@@ -61,7 +61,7 @@ namespace UnitTests
                 .Returns(dateTimeNow.AddMinutes(1))
                 .Returns(dateTimeNow.AddMinutes(2));
 
-            timeManagerMock.Setup(p => p.DateToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("ddd, dd MMMM yyyy"));
+            timeManagerMock.Setup(p => p.DateToStringWeek(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("ddd, dd MMMM yyyy"));
             timeManagerMock.Setup(p => p.TimeToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("HH:mm"));
 
             List<NoteInfo> actualNotes = noteManager.GetNotes();
@@ -89,7 +89,7 @@ namespace UnitTests
                 .Returns(dateTimeNow.AddMinutes(1))
                 .Returns(dateTimeNow.AddMinutes(2));
 
-            timeManagerMock.Setup(p => p.DateToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("ddd, dd MMMM yyyy"));
+            timeManagerMock.Setup(p => p.DateToStringWeek(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("ddd, dd MMMM yyyy"));
             timeManagerMock.Setup(p => p.TimeToString(It.IsAny<DateTime>())).Returns((DateTime x) => x.ToString("HH:mm"));
 
             List<NoteInfo> actualNotes = noteManager.GetNotes();

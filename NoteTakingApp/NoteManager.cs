@@ -90,11 +90,5 @@ namespace NoteTakingApp
                 consoleManager.WriteLine($"Note {note.Note}, taken on {note.Date} at {note.Time}");
             }
         }
-
-        //Split interface so that this can be avoided
-        public void ReadNotes(string startDate, string endDate)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
