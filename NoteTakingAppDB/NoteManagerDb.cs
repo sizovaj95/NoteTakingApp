@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
-
+ 
 namespace NoteTakingApp
 {
-    public class NoteManager
+    public class NoteManagerDb
     {
         private readonly IConsoleManager consoleManager;
         private readonly ITimeManager timeManager;
-        readonly SqlConnection? conn;
+        private readonly IDbConnection conn;
 
 
-        public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager,
+        public NoteManagerDb(IConsoleManager consoleManager, ITimeManager timeManager,
                            string connectionString)
         {
             this.consoleManager = consoleManager;
@@ -28,14 +24,15 @@ namespace NoteTakingApp
             catch (Exception ex)
             {
                 consoleManager.WriteLine(ex.Message);
-            }
-            
+            }            
         }
 
-        public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager)
+        public NoteManagerDb(IConsoleManager consoleManager, ITimeManager timeManager,
+            IDbConnection connection)
         {
             this.consoleManager = consoleManager;
             this.timeManager = timeManager;
+            conn = connection;
         }
 
         public List<NoteInfo> GetNotes()
@@ -75,9 +72,9 @@ namespace NoteTakingApp
                 }
                 string query = builder.ToString();
                 query = query.TrimEnd(',');
-                SqlCommand command = new SqlCommand(query, conn);
-                using (command)
+                using (IDbCommand command = conn.CreateCommand())
                 {
+                    command.CommandText = query;
                     command.ExecuteNonQuery();
                 }
                 conn.Close();
@@ -136,25 +133,28 @@ namespace NoteTakingApp
 
         public void QueryDB(string query)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-            using (adapter)
+            conn.Open();
+            IDbCommand command = conn.CreateCommand();
+            command.CommandText = query;
+            IDataReader reader = command.ExecuteReader();
+            if (!reader.Read()) 
             {
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                if (table.Rows.Count == 0)
+                consoleManager.WriteLine("There is no data.");
+             }
+            else
+            {
+                while (reader.Read())
                 {
-                    consoleManager.WriteLine("There is no data.");
+                    DateTime date = (DateTime)reader.GetValue(2);
+                    consoleManager.WriteLine($"{reader.GetValue(0)}, {reader.GetValue(1)}, {timeManager.DateToStringWeek(date)}, {reader.GetValue(3)}");
+                    
                 }
-                else
-                {
-                    foreach (DataRow row in table.Rows)
-                    {
-                        DateTime date = (DateTime)row[2];
-                        consoleManager.WriteLine($"{row[0]}, {row[1]}, {timeManager.DateToStringWeek(date)}, {row[3]}");
-                    }
-                }                
-            }
+            }            
+            reader.Close();
+            command.Dispose();
+            conn.Close();
         }
+
         public void RemoveNotes(string by, params string[] conditions)
         {
             StringBuilder builder = new StringBuilder("DELETE FROM Note WHERE ");
@@ -198,7 +198,7 @@ namespace NoteTakingApp
                     break;               
             }
             conn.Open();
-            SqlCommand command = new SqlCommand(query, conn);
+            IDbCommand command = conn.CreateCommand();
             using (command)
             {
                 command.ExecuteNonQuery();

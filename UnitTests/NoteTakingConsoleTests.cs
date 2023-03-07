@@ -6,7 +6,7 @@ using System;
 using FluentAssertions;
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;
-
+ 
 namespace UnitTests
 {
     [TestClass]
@@ -15,7 +15,7 @@ namespace UnitTests
         Mock<IConsoleManager> consoleManagerMock;
         Mock<ITimeManager> timeManagerMock;
         MockFileSystem mockFileSystem;
-        NoteManager noteManager;
+        NoteManagerConsole noteManager;
 
         static List<NoteInfo> expectedNotes;
         static DateTime dateTimeNow;
@@ -39,7 +39,7 @@ namespace UnitTests
             consoleManagerMock = new Mock<IConsoleManager>();
             timeManagerMock = new Mock<ITimeManager>();
             mockFileSystem = new MockFileSystem();
-            noteManager = new NoteManager(consoleManagerMock.Object, timeManagerMock.Object,
+            noteManager = new NoteManagerConsole(consoleManagerMock.Object, timeManagerMock.Object,
                                           saveDir, mockFileSystem);
         }
 

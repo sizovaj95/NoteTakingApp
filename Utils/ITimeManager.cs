@@ -12,5 +12,6 @@ namespace NoteTakingApp
         string DateToStringWeek(DateTime dateTime);
         string DateToStringDash(DateTime dateTime);
         string TimeToString(DateTime dateTime);
+        string TimeSpanToString(TimeSpan time);
     }
 }

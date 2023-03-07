@@ -1,4 +1,6 @@
-﻿
+﻿using Microsoft.Extensions.Configuration;
+
+
 namespace NoteTakingApp
 {
 
@@ -8,8 +10,15 @@ namespace NoteTakingApp
         {
             ConsoleManager consoleManager = new ConsoleManager();
             TimeManager timeManager = new TimeManager();
-            string connectionString = GetConnectionString();
-            NoteManager noteManager = new NoteManager(consoleManager, timeManager, connectionString);
+
+            var builder = new ConfigurationBuilder();
+            builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfiguration config = builder.Build();
+
+            string connectionString = config["ConnectionStrings:SqlServerConn"];
+
+            NoteManagerDb noteManager = new NoteManagerDb(consoleManager, timeManager, connectionString);
             ConsoleKey action;
             ConsoleKey readOption;
             do
@@ -100,14 +109,6 @@ namespace NoteTakingApp
                     "2 - Read notes\n" +
                     "3 - Remove notes\n" +
                     "or press Esc to exit");
-        }
-
-        static string GetConnectionString()
-        {
-            var root = Path.GetPathRoot(Directory.GetCurrentDirectory());
-            var path = Path.Combine(root, "Julia/Documents/Learning/connectionString.txt");
-            string connString = File.ReadAllText(path);
-            return connString;
-        }
+        }        
     }
 }

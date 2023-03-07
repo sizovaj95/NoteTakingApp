@@ -5,21 +5,21 @@ using System.IO.Abstractions;
 
 namespace NoteTakingApp
 {
-    public class NoteManager: INoteManager
+    public class NoteManagerConsole: INoteManager
     {
         private readonly IConsoleManager consoleManager;
         private readonly ITimeManager timeManager;
         public string notesFilePath;
         private readonly IFileSystem fileSystem;
 
-        public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager)
+        public NoteManagerConsole(IConsoleManager consoleManager, ITimeManager timeManager)
         {
             this.consoleManager = consoleManager;
             this.timeManager = timeManager;
             notesFilePath = @"D:\Julia\Documents\Learning\notes\notes.txt";
             fileSystem = new FileSystem();
         }
-        public NoteManager(IConsoleManager consoleManager, ITimeManager timeManager,
+        public NoteManagerConsole(IConsoleManager consoleManager, ITimeManager timeManager,
                            string notesFilePath, IFileSystem fileSystem)
         {
             this.consoleManager = consoleManager;

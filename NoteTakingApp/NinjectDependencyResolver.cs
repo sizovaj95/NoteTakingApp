@@ -14,7 +14,7 @@ namespace NoteTakingApp
         {
             Bind<IConsoleManager>().To<ConsoleManager>();
             Bind<ITimeManager>().To<TimeManager>();
-            Bind<INoteManager>().To<NoteManager>();            
+            Bind<INoteManager>().To<NoteManagerConsole>();            
         }
     }
 }

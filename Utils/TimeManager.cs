@@ -20,5 +20,10 @@ namespace NoteTakingApp
         {
             return dateTime.ToString("HH:mm");
         }
+
+        public string TimeSpanToString(TimeSpan time)
+        {
+            return time.ToString(@"hh\:mm");
+        }
     }
 }
